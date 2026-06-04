@@ -1,0 +1,23 @@
+# learn-repo-generator workdir — contains the upstream shallow clone (~10-300MB).
+# MUST never be committed.
+.learn/
+
+# Go build artifacts
+*.exe
+*.test
+*.out
+*.prof
+bin/
+
+# Node / Next.js (web viewer)
+web/node_modules/
+web/.next/
+web/out/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+*.swp
+
+# compiled per-session Go binaries (named after module path last element, e.g. s02)
+agents/*/s[0-9][0-9]

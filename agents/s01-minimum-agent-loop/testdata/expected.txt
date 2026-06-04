@@ -1,0 +1,20 @@
+# Expected output SHAPE for s01 (the minimum agent loop).
+#
+# LLM output is non-deterministic, so this is the SHAPE to look for, not a
+# byte-exact transcript. With `-v`, a successful "write a file" run looks like:
+#
+#   [s01] provider=anthropic model=claude-sonnet-4-6 url=
+#   [turn 0] assistant: I'll create that file for you.
+#   [turn 0] -> write_file map[content:hi path:hello.txt]
+#   [turn 0] <- wrote 2 bytes to hello.txt
+#   [turn 1] assistant: Done. I created hello.txt with the text "hi".
+#   Done. I created hello.txt with the text "hi".
+#
+# What to verify you ran it correctly:
+#   1. At least one "[turn N] -> <tool> ..." line  (the model asked for a tool)
+#   2. A matching "[turn N] <- ..."                (the tool ran, result fed back)
+#   3. A later turn with NO tool call              (stop_reason=end_turn)
+#   4. The final assistant text printed to stdout  (the loop's return value)
+#
+# If you see "loop exceeded MaxTurns=...", the model kept calling tools without
+# finishing — raise -max-turns or give a clearer prompt.
