@@ -1,3 +1,14 @@
 go 1.23
 
-use ./agents/s01-minimum-agent-loop
+use (
+	./agents/s01-minimum-agent-loop
+	./agents/s02-streaming-message-parser
+	./agents/s03-tool-registry-execution
+	./agents/s04-approval-gating
+	./agents/s05-provider-streaming
+	./agents/s06-system-prompt
+	./agents/s07-file-edit-diff
+	./agents/s08-context-window-management
+	./agents/s09-mcp-integration
+	./agents/s10-checkpoints-shadow-git
+)

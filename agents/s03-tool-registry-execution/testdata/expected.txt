@@ -1,0 +1,25 @@
+# Expected output SHAPE for s03 (tool registry + execution).
+#
+# Unlike s01, s03 is fully deterministic: no LLM, no network. `go run .` builds
+# a temp sandbox, registers four tools, and dispatches six scripted tool_use
+# blocks. You should see exactly this (the temp path never appears — output is
+# stable):
+#
+#   [t1] write_to_file    -> ok    wrote 11 bytes to notes/hello.txt
+#   [t2] read_file        -> ok    hi from s03
+#   [t3] list_files       -> ok    hello.txt
+#   [t4] execute_command  -> ok    registry-and-dispatch
+#   [t5] fly_to_moon      -> ERROR Error: unknown tool "fly_to_moon". Available tools: execute_command, list_files, read_file, write_to_file
+#   [t6] read_file        -> ERROR Error: missing required parameter "path" for tool "read_file".
+#
+# With -v, the four registered tool schemas are printed to stderr first.
+#
+# What to verify you ran it correctly:
+#   1. t1..t4 are "ok"          (the four real tools dispatched and ran)
+#   2. t2 reads back what t1 wrote (write -> read round-trip through the registry)
+#   3. t5 is "ERROR ... unknown tool"        (dispatch on a missing name)
+#   4. t6 is "ERROR ... missing required parameter"  (validation before Execute)
+#
+# Both error cases return a tool_result with IsError=true — the loop keeps
+# going, the model sees the error. Nothing panics. That non-crashing dispatch is
+# the whole point of the chapter.

@@ -17,15 +17,15 @@ Every chapter is a **self-contained Go module** (`learn-cline/sNN`): no cross-ch
 | # | Chapter | Mechanism | Status |
 |---|---------|-----------|--------|
 | s01 | [Minimum agent loop](docs/en/s01-minimum-agent-loop.md) | request → response → tool → result → loop | ✅ |
-| s02 | Streaming message parser | incrementally parse XML tool calls from a growing string | ⏳ |
-| s03 | Tool registry & execution | name-dispatched tool registry + `tool_result` wrapping | ⏳ |
-| s04 | Human-in-the-loop approval gating | approval gate + auto-approve allowlist | ⏳ |
-| s05 | Provider streaming abstraction | parse the SSE stream + provider factory | ⏳ |
-| s06 | Modular system prompt | variant-driven prompt builder + tool-spec injection | ⏳ |
-| s07 | File edit & diff application | streaming application of SEARCH/REPLACE diff blocks | ⏳ |
-| s08 | Context window management | safe truncation under a token budget | ⏳ |
-| s09 | MCP integration | stdio JSON-RPC client + remote-tool adapter | ⏳ |
-| s10 | Checkpoints via shadow git | per-step snapshot & restore via a shadow git repo | ⏳ |
+| s02 | [Streaming message parser](docs/en/s02-streaming-message-parser.md) | incrementally parse XML tool calls from a growing string | ✅ |
+| s03 | [Tool registry & execution](docs/en/s03-tool-registry-execution.md) | name-dispatched tool registry + `tool_result` wrapping | ✅ |
+| s04 | [Human-in-the-loop approval gating](docs/en/s04-approval-gating.md) | approval gate + auto-approve allowlist | ✅ |
+| s05 | [Provider streaming abstraction](docs/en/s05-provider-streaming.md) | parse the SSE stream + provider factory | ✅ |
+| s06 | [Modular system prompt](docs/en/s06-system-prompt.md) | variant-driven prompt builder + tool-spec injection | ✅ |
+| s07 | [File edit & diff application](docs/en/s07-file-edit-diff.md) | streaming application of SEARCH/REPLACE diff blocks | ✅ |
+| s08 | [Context window management](docs/en/s08-context-window-management.md) | safe truncation under a token budget | ✅ |
+| s09 | [MCP integration](docs/en/s09-mcp-integration.md) | stdio JSON-RPC client + remote-tool adapter | ✅ |
+| s10 | [Checkpoints via shadow git](docs/en/s10-checkpoints-shadow-git.md) | per-step snapshot & restore via a shadow git repo | ✅ |
 | s_full | Full integration | wire all mechanisms into one complete cline agent | ⏳ |
 | A | Appendix A · Approval safety model | human-in-the-loop + Plan/Act mode | ⏳ |
 | B | Appendix B · Upstream map | chapter-to-upstream-source cross-reference | ⏳ |

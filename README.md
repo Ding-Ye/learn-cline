@@ -17,15 +17,15 @@ cline 是一个自主编码智能体：你给它一个任务，它读代码、�
 | # | 章节 | 机制 | 状态 |
 |---|------|------|------|
 | s01 | [最小智能体循环](docs/zh/s01-minimum-agent-loop.md) | 请求 → 响应 → 工具 → 结果 → 循环 | ✅ |
-| s02 | 流式消息解析器 | 从增长的字符串中增量解析 XML 工具调用 | ⏳ |
-| s03 | 工具注册与执行 | 按名分发的工具注册表 + `tool_result` 封装 | ⏳ |
-| s04 | 人类在环审批 | 审批门控 + 自动批准白名单 | ⏳ |
-| s05 | 供应商流式抽象 | 解析 SSE 流 + 供应商工厂 | ⏳ |
-| s06 | 模块化系统提示词 | 变体驱动的提示词构建 + 工具规格注入 | ⏳ |
-| s07 | 文件编辑与差异应用 | SEARCH/REPLACE 差异块的流式应用 | ⏳ |
-| s08 | 上下文窗口管理 | 预算内的安全截断 | ⏳ |
-| s09 | MCP 外部工具集成 | stdio JSON-RPC 客户端 + 远程工具适配 | ⏳ |
-| s10 | 影子 Git 检查点 | 影子 git 的每步快照与恢复 | ⏳ |
+| s02 | [流式消息解析器](docs/zh/s02-streaming-message-parser.md) | 从增长的字符串中增量解析 XML 工具调用 | ✅ |
+| s03 | [工具注册与执行](docs/zh/s03-tool-registry-execution.md) | 按名分发的工具注册表 + `tool_result` 封装 | ✅ |
+| s04 | [人类在环审批](docs/zh/s04-approval-gating.md) | 审批门控 + 自动批准白名单 | ✅ |
+| s05 | [供应商流式抽象](docs/zh/s05-provider-streaming.md) | 解析 SSE 流 + 供应商工厂 | ✅ |
+| s06 | [模块化系统提示词](docs/zh/s06-system-prompt.md) | 变体驱动的提示词构建 + 工具规格注入 | ✅ |
+| s07 | [文件编辑与差异应用](docs/zh/s07-file-edit-diff.md) | SEARCH/REPLACE 差异块的流式应用 | ✅ |
+| s08 | [上下文窗口管理](docs/zh/s08-context-window-management.md) | 预算内的安全截断 | ✅ |
+| s09 | [MCP 外部工具集成](docs/zh/s09-mcp-integration.md) | stdio JSON-RPC 客户端 + 远程工具适配 | ✅ |
+| s10 | [影子 Git 检查点](docs/zh/s10-checkpoints-shadow-git.md) | 影子 git 的每步快照与恢复 | ✅ |
 | s_full | 集成全貌 | 把以上机制接成一个完整的 cline 智能体 | ⏳ |
 | A | 附录 A · 审批安全模型 | 人类在环 + Plan/Act 模式 | ⏳ |
 | B | 附录 B · 上游映射 | 每一章到上游源码的对照表 | ⏳ |

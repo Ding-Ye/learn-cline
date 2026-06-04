@@ -1,0 +1,64 @@
+Expected output SHAPE for s07-file-edit-diff.
+
+The demo (`go run .` with no flags) is fully offline and deterministic: it seeds a
+temp file, applies a two-block SEARCH/REPLACE diff, prints the before/after, then
+replays the SAME diff in growing chunks to show streamed application. There is no
+LLM and no network, so this output IS reproducible.
+
+------------------------------------------------------------------------------
+$ GOWORK=off go run .
+------------------------------------------------------------------------------
+== original main.go ==
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("hello")
+}
+
+== diff (SEARCH/REPLACE blocks) ==
+------- SEARCH
+func main() {
+=======
+func greeting() string { return "hello, cline" }
+
+func main() {
++++++++ REPLACE
+------- SEARCH
+	fmt.Println("hello")
+=======
+	fmt.Println(greeting())
++++++++ REPLACE
+
+== edited main.go ==
+package main
+
+import "fmt"
+
+func greeting() string { return "hello, cline" }
+
+func main() {
+	fmt.Println(greeting())
+}
+
+== streamed application (incremental result length) ==
+  after  1/12 diff lines: result is 0 bytes
+  after  3/12 diff lines: result is 28 bytes
+  after  5/12 diff lines: result is 78 bytes
+  after  7/12 diff lines: result is 92 bytes
+  after  9/12 diff lines: result is 92 bytes
+  after 11/12 diff lines: result is 117 bytes
+  final result == one-shot result: true
+
+Notes:
+- Two blocks apply in file order: the first inserts greeting() above main(), the
+  second rewrites the Println call. The applier walks the original forward, so
+  blocks MUST be in the order they appear in the file.
+- The streamed run feeds growing prefixes of the diff; the in-progress result
+  length only ever grows, and the final streamed result equals the one-shot one.
+
+------------------------------------------------------------------------------
+$ GOWORK=off go test -count=1 ./...
+------------------------------------------------------------------------------
+ok  	learn-cline/s07	0.50s

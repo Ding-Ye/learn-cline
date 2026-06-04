@@ -1,0 +1,44 @@
+Expected output SHAPE for s05-provider-streaming.
+
+LLM output is non-deterministic, so the -live runs will differ. The OFFLINE
+demo (`go run .` with no flags) replays a recorded Anthropic SSE fixture through
+the real decoder, so its shape IS reproducible. Use it to confirm the chunk
+pipeline works.
+
+------------------------------------------------------------------------------
+$ GOWORK=off go run .
+------------------------------------------------------------------------------
+== offline demo: replaying a recorded Anthropic SSE stream ==
+  [usage] in=42 out=1
+  [text]  "Let me "
+  [text]  "read that file."
+  [tool]  start id=toolu_01 name=read_file
+  [tool]  input += "{\"path\":"
+  [tool]  input += "\"main.go\"}"
+  [usage] in=0 out=17
+  [done]
+
+== assembled response ==
+stop_reason: tool_use  usage: in=42 out=17
+text: "Let me read that file."
+tool_use: read_filemap[path:main.go]
+
+Notes:
+- Each [text]/[tool]/[usage]/[done] line is ONE normalized StreamChunk off the
+  wire, in arrival order. Text and tool input arrive as small deltas.
+- The final "assembled response" is what assembleResponse folds the chunk
+  stream back into: one text block + one tool_use block (with the two partial
+  JSON fragments concatenated and parsed), stop_reason flipped to tool_use, and
+  input tokens from message_start + output tokens from message_delta.
+
+------------------------------------------------------------------------------
+$ GOWORK=off go run . -live -provider deepseek -prompt "say hi"   (needs a key)
+------------------------------------------------------------------------------
+== live stream from deepseek ==
+Hi there! ...text streams in token by token...
+[done]
+
+------------------------------------------------------------------------------
+$ GOWORK=off go test -count=1 ./...
+------------------------------------------------------------------------------
+ok  	learn-cline/s05	0.50s

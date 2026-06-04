@@ -1,0 +1,29 @@
+# Expected output SHAPE for s04 (human-in-the-loop approval gating).
+#
+# The demo is offline and deterministic — it plays a fixed batch of tool calls
+# through the ApprovalGate, so this IS reproducible (modulo the temp path).
+#
+# `go run .` (default: injected approver REJECTS escalations):
+#
+#   [s04] workspace=/tmp/s04-demo-XXXX approveAll=false approveYes=false interactive=false
+#   [gate] read_file   path="notes.txt"     -> auto-approve ran=true
+#          tool_result(call_1, is_error=false): hello from the workspace
+#   [gate] write_file  path="out.txt"       -> auto-approve ran=true
+#          tool_result(call_2, is_error=false): wrote 22 bytes to out.txt
+#   [gate] write_file  path="../escape.txt" -> reject       ran=false
+#          tool_result(call_3, is_error=true): The user rejected the "write_file" tool call. Feedback: rejected by injected approver
+#
+# What to verify you ran it correctly:
+#   1. read_file  -> auto-approve, ran=true      (read-only is pre-cleared, no prompt)
+#   2. write_file out.txt -> auto-approve, ran=true   (in-workspace write pre-cleared by path)
+#   3. write_file ../escape.txt -> reject, ran=false  (escaping path escalates; injected human rejects)
+#   4. the rejected call still produces a tool_result with is_error=true
+#      (a rejection round-trips as FEEDBACK to the model, it does NOT abort)
+#
+# Flags that change the shape:
+#   go run . -y            # injected approver APPROVES → call_3 runs (ran=true)
+#   go run . -approve-all  # policy pre-clears everything → call_3 auto-approve
+#   go run . -i            # ask Y/N on stdin for the escaping write
+#
+# Tests are fully offline and need no flags:
+#   GOWORK=off go test -count=1 ./...

@@ -1,0 +1,29 @@
+# Expected output SHAPE for s09 (MCP integration).
+#
+# s09 is fully deterministic: no subprocess, no network. `go run .` connects an
+# McpClient to an in-process FakeServer, runs initialize -> tools/list ->
+# tools/call, merges the discovered tools into a Registry, and dispatches a few
+# calls. You should see exactly this (stdout):
+#
+#   discovered 2 MCP tool(s):
+#     - add    Add two integers a and b.
+#     - echo   Echo back the provided text.
+#
+#   calling tools through the registry:
+#     echo   -> ok    hello from MCP
+#     add    -> ok    42
+#     echo   -> ERROR echo requires a non-empty 'text' argument
+#
+# With -v, the initialize handshake is printed to stderr first:
+#
+#   [s09] handshake ok: server=fake-mcp-server v1.0.0 protocol=2024-11-05
+#
+# What to verify you ran it correctly:
+#   1. Two tools are DISCOVERED from the server (not compiled in): add, echo.
+#   2. echo round-trips its "text" argument over tools/call.
+#   3. add returns 2 + 40 = 42 — a different tool, dispatched by name.
+#   4. The empty-text echo is an ERROR result, not a crash: a tool-level failure
+#      (isError:true) surfaces so the model could read and recover from it.
+#
+# The remote tools are dispatched THROUGH the registry, exactly like s03's
+# compiled-in tools — that indistinguishability is the whole point of the chapter.

@@ -1,0 +1,54 @@
+Expected output SHAPE for s10-checkpoints-shadow-git.
+
+This chapter drives a REAL git binary against a throwaway temp workspace, so the
+commit hashes differ on every run and the temp paths are random. The SHAPE
+below is what to look for; the 8-char hashes are placeholders.
+
+------------------------------------------------------------------------------
+$ GOWORK=off go run .
+------------------------------------------------------------------------------
+== shadow git checkpoints demo ==
+workspace : /tmp/s10-demo-XXXXXX/workspace
+shadow dir: /tmp/s10-demo-XXXXXX/shadow-git   (separate GIT_DIR — never the user's .git)
+
+[init] shadow repo created with an initial commit
+[turn 1] wrote app.go              -> checkpoint 91e5e0dd
+[turn 2] edited app.go + util.go   -> checkpoint 3804a6af
+
+workspace now:
+  - app.go
+  - util.go
+
+[restore] resetting workspace to checkpoint 91e5e0dd (end of turn 1)
+workspace after restore:
+  - app.go
+app.go contents: "package main\n\nfunc main() {}\n"
+
+[safety] workspace/.git does NOT exist — the user's history was never touched
+[turn 3] new edit after restore    -> checkpoint 51ba718f
+
+shadow timeline now holds 3 commits (newest first):
+  51ba718f
+  91e5e0dd
+  ab5e41f5
+
+Notes:
+- The two flags `--git-dir=<shadow> --work-tree=<workspace>` are what make this
+  a SHADOW git: the object store lives at <shadow>, the tracked files live in
+  the workspace, and the user's real repo is never created or touched.
+- After "turn 2" both app.go and util.go exist on disk. After restoring the
+  turn-1 checkpoint, util.go is gone and app.go is back to its turn-1 contents —
+  that is the per-step undo.
+- The "[safety]" line confirms there is no .git inside the workspace.
+- Restore is non-destructive to the timeline: "turn 3" keeps committing after
+  the restore, so the shadow ends with 3 commits (initial + turn1 + turn3; the
+  turn-2 commit was rewound away by the hard reset).
+
+If git is NOT installed you instead see:
+    git is not installed; checkpoints need a real git binary.
+and the tests t.Skip rather than fail.
+
+------------------------------------------------------------------------------
+$ GOWORK=off go test -count=1 ./...
+------------------------------------------------------------------------------
+ok  	learn-cline/s10	2.2s

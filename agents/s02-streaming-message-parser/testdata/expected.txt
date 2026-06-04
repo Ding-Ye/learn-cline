@@ -1,0 +1,31 @@
+# Expected output SHAPE for s02 (the streaming XML message parser).
+#
+# The parser is deterministic — there is no LLM here, just a hard-coded sample
+# assistant turn fed in chunks. So unlike s01 this output is reproducible.
+#
+# `go run .` (default: feed the sample in 7-byte chunks, which splits tags
+# across chunk boundaries on purpose) prints to stderr+stdout:
+#
+#   [s02] feeding 39 chunk(s) of a streamed assistant message
+#   === final parse ===
+#     [0] text: "I'll create a small greeter for you."
+#     [1] tool_use: write_to_file
+#           path = "greet.go"
+#           content = "package main\n\nimport \"fmt\"\n\n// prints a greeting. ..."
+#     [2] text (partial): "That file is ready."
+#
+# What to verify you ran it correctly:
+#   1. Block [0] is a TEXT block (the prose before the tool tag).
+#   2. Block [1] is a TOOL_USE block named write_to_file, with BOTH params
+#      (path and content) extracted — even though the chunking split the tags.
+#   3. The content param survived its multi-line body verbatim (the
+#      lastIndexOf(</content>) recovery path).
+#   4. Block [2] is TEXT and marked "(partial)": trailing text is always partial
+#      because the stream could continue.
+#
+# `go run . -steps` prints the parse after EACH chunk so you can watch the tool
+# block start as partial and become complete once </write_to_file> arrives.
+#
+# `go run . -chunk 0` feeds the whole sample at once; the FINAL parse is byte-for
+# -byte identical to the chunked run — that equivalence is the streaming
+# guarantee (see TestByteByByteEqualsAllAtOnce).

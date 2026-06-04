@@ -1,0 +1,40 @@
+Expected output SHAPE for s08 (context-window management).
+
+The demo is fully OFFLINE and deterministic — it fabricates a fixed conversation
+and runs the ContextManager over it, so this output IS reproducible byte-for-byte
+(no LLM, no temp paths).
+
+------------------------------------------------------------------------------
+$ GOWORK=off go run .
+------------------------------------------------------------------------------
+[s08] budget=3000 keepRecent=4 turns=12
+  before: messages=25  est_tokens=13443  over_budget=true
+  roles:  u a u a u a u a u a u a u a u a u a u a u a u a u
+  drop range: [2..19] (18 messages, even=true, last-removed role="assistant")
+  after:  messages=7  est_tokens=2328  over_budget=false
+  roles:  u a u a u a u
+  truncated=true
+  invariants: first_task_msg_kept=true recent_tail_kept=true no_orphan_tool_result=true
+
+What to verify you ran it correctly:
+  1. before.over_budget=true     (the 25-message history overflows the budget)
+  2. drop range starts at 2       (the first user/assistant PAIR is never removed)
+  3. last-removed role="assistant"(kept tail resumes on a user message → valid order)
+  4. after.messages < before      (a middle range was dropped)
+  5. after.over_budget=false      (one truncation pass brought it under budget)
+  6. all three invariants=true    (first task msg kept, recent tail kept, no orphan
+                                   tool_result left dangling at the new boundary)
+
+Flags that change the shape:
+  go run . -budget 100000   # huge budget → over_budget=false, truncated=false (no-op)
+  go run . -budget 1500     # tight budget → after still over_budget (one pass isn't
+                            #   enough; cline truncates again on the NEXT request)
+  go run . -keep 8          # preserve more recent turns (kept tail is longer)
+  go run . -turns 30        # a longer conversation to drop from
+
+Tests are fully offline and need no flags:
+
+------------------------------------------------------------------------------
+$ GOWORK=off go test -count=1 ./...
+------------------------------------------------------------------------------
+ok  	learn-cline/s08	0.30s

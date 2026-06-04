@@ -21,6 +21,15 @@ jobs:
       matrix:
         session:
           - s01-minimum-agent-loop
+          - s02-streaming-message-parser
+          - s03-tool-registry-execution
+          - s04-approval-gating
+          - s05-provider-streaming
+          - s06-system-prompt
+          - s07-file-edit-diff
+          - s08-context-window-management
+          - s09-mcp-integration
+          - s10-checkpoints-shadow-git
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
