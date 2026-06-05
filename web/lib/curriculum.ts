@@ -79,7 +79,7 @@ export const CURRICULUM: ChapterMeta[] = [
     slug: "s_full-integration",
     num: "s_full",
     title: { zh: "集成全貌", en: "Full integration" },
-    available: false,
+    available: true,
   },
   {
     slug: "appendix-a-approval-safety-model",
@@ -88,7 +88,7 @@ export const CURRICULUM: ChapterMeta[] = [
       zh: "附录 A · 审批安全模型",
       en: "Appendix A · Approval safety model",
     },
-    available: false,
+    available: true,
   },
   {
     slug: "appendix-b-upstream-map",
@@ -97,7 +97,7 @@ export const CURRICULUM: ChapterMeta[] = [
       zh: "附录 B · 上游映射",
       en: "Appendix B · Upstream map",
     },
-    available: false,
+    available: true,
   },
 ];
 

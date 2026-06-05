@@ -26,9 +26,9 @@ Every chapter is a **self-contained Go module** (`learn-cline/sNN`): no cross-ch
 | s08 | [Context window management](docs/en/s08-context-window-management.md) | safe truncation under a token budget | ✅ |
 | s09 | [MCP integration](docs/en/s09-mcp-integration.md) | stdio JSON-RPC client + remote-tool adapter | ✅ |
 | s10 | [Checkpoints via shadow git](docs/en/s10-checkpoints-shadow-git.md) | per-step snapshot & restore via a shadow git repo | ✅ |
-| s_full | Full integration | wire all mechanisms into one complete cline agent | ⏳ |
-| A | Appendix A · Approval safety model | human-in-the-loop + Plan/Act mode | ⏳ |
-| B | Appendix B · Upstream map | chapter-to-upstream-source cross-reference | ⏳ |
+| s_full | Full integration | wire all mechanisms into one complete cline agent | ✅ |
+| A | Appendix A · Approval safety model | human-in-the-loop + Plan/Act mode | ✅ |
+| B | Appendix B · Upstream map | chapter-to-upstream-source cross-reference | ✅ |
 
 ## Quickstart
 

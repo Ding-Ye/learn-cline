@@ -26,9 +26,9 @@ cline 是一个自主编码智能体：你给它一个任务，它读代码、�
 | s08 | [上下文窗口管理](docs/zh/s08-context-window-management.md) | 预算内的安全截断 | ✅ |
 | s09 | [MCP 外部工具集成](docs/zh/s09-mcp-integration.md) | stdio JSON-RPC 客户端 + 远程工具适配 | ✅ |
 | s10 | [影子 Git 检查点](docs/zh/s10-checkpoints-shadow-git.md) | 影子 git 的每步快照与恢复 | ✅ |
-| s_full | 集成全貌 | 把以上机制接成一个完整的 cline 智能体 | ⏳ |
-| A | 附录 A · 审批安全模型 | 人类在环 + Plan/Act 模式 | ⏳ |
-| B | 附录 B · 上游映射 | 每一章到上游源码的对照表 | ⏳ |
+| s_full | 集成全貌 | 把以上机制接成一个完整的 cline 智能体 | ✅ |
+| A | 附录 A · 审批安全模型 | 人类在环 + Plan/Act 模式 | ✅ |
+| B | 附录 B · 上游映射 | 每一章到上游源码的对照表 | ✅ |
 
 ## 快速开始
 
